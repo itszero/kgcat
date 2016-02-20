@@ -1,0 +1,29 @@
+{
+  "name": "kgcat",
+  "version": "1.0.0",
+  "description": "Tap into Google's knowledge right from your console.",
+  "main": "src/index.js",
+  "bin": {
+    "kgcat": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "google",
+    "imgcat",
+    "iterm2",
+    "knowledge",
+    "graph"
+  ],
+  "author": "Zero Cho <itszero@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "phantomjs-prebuilt": "^2.1.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:itszero/kgcat.git"
+  }
+}

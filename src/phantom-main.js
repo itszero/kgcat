@@ -7,17 +7,23 @@ if (system.args.length === 1) {
   phantom.exit(-1);
 }
 var searchTerm = system.args.slice(1).join(' ');
+var url = 'https://www.google.com/search?q=' + encodeURIComponent(searchTerm);
 
 page.settings.userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36';
 page.viewportSize = { width: 1024, height: 768 };
 
-page.open('https://www.google.com/search?q=' + searchTerm, function(status) {
+page.open(url, function(status) {
   if (status !== 'success') {
     console.log('Failed to retrieve search results')
     phantom.exit(-2);
   }
 
-  var selectorsToRender = ['.vk_c', '.kp-blk'];
+  /**
+   * .vk_c: main knowledge graph block
+   * .kp-blk: smaller knowledge graph block or sidebar
+   * .kno-himx: medical sideinfo
+   */
+  var selectorsToRender = ['.vk_c', '.kp-blk', '.kno-himx'];
   var rendered = false;
   selectorsToRender.forEach(function(selector) {
     var clipRect = page.evaluate(function(selector) {
@@ -42,6 +48,7 @@ page.open('https://www.google.com/search?q=' + searchTerm, function(status) {
     console.log('No knowledge graph blocks found on page.');
     phantom.exit(-3);
   } else {
+    console.log('⌘ click: ' + url);
     phantom.exit();
   }
 });

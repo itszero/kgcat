@@ -1,6 +1,6 @@
 {
   "name": "kgcat",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Tap into Google's knowledge right from your console.",
   "main": "src/index.js",
   "bin": {

@@ -18,33 +18,17 @@ page.open(url, function(status) {
     phantom.exit(-2);
   }
 
-  /**
-   * .vk_c: main knowledge graph block
-   * .kp-blk: smaller knowledge graph block or sidebar
-   * .kno-himx: medical sideinfo
-   */
-  var selectorsToRender = ['.vk_c', '.kp-blk', '.kno-himx'];
-  var rendered = false;
-  selectorsToRender.forEach(function(selector) {
-    var clipRect = page.evaluate(function(selector) {
-      var e = document.querySelector(selector);
-      var rect = e && e.getBoundingClientRect();
-      return rect && {
-        top: rect.top,
-        left: rect.left,
-        width: rect.width,
-        height: rect.height
-      };
-    }, selector);
-
-    if (clipRect) {
-      rendered = true;
-      page.clipRect = clipRect;
-      console.log(imgcat(page.renderBase64()));
-    }
+  page.injectJs('inject-to-page.js');
+  var clipRects = page.evaluate(function() {
+    return __kgcat__findKGClipRects();
   });
 
-  if (!rendered) {
+  clipRects.forEach(function(clipRect) {
+    page.clipRect = clipRect;
+    console.log(imgcat(page.renderBase64()));
+  });
+
+  if (clipRects.length === 0) {
     console.log('No knowledge graph blocks found on page.');
     phantom.exit(-3);
   } else {

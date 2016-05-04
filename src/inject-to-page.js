@@ -44,7 +44,25 @@
     });
   }
 
-  function __kgcat__findKGClipRects() {
+  function findTwitterClips() {
+    var carousel = document.querySelector('g-snapping-carousel');
+    if (!carousel)
+      return [];
+
+    var parent = carousel;
+    while (parent) {
+      if (parent.hasAttribute('data-hveid'))
+        break;
+      parent = parent.parentNode;
+    }
+    if (parent) {
+      parent.style.padding = '10px';
+    }
+
+    return parent ? [clipRectFromElement(parent)] : [];
+  }
+
+  function findKGClipRects() {
     /**
      * .vk_c: main knowledge graph block
      * .kp-blk: smaller knowledge graph block or sidebar
@@ -52,7 +70,8 @@
      */
     var selectorsToRender = ['.vk_c', '.kp-blk', '.kno-himx'];
     return flatMap(selectorsToRender, findElementsBySelector)
+      .concat(findTwitterClips())
       .filter(function(rect) { return !!rect; });
   }
-  window.__kgcat__findKGClipRects = __kgcat__findKGClipRects;
+  window.__kgcat__findKGClipRects = findKGClipRects;
 })();
